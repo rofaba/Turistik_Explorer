@@ -55,6 +55,39 @@
                 <div style="margin-top:14px;" class="muted">Imagen (URL):</div>
                 <a class="pill" th:href="${poi.imageUrl}" target="_blank">Abrir</a>
             </div>
+            <div class="card" style="margin-top:16px;">
+                <h3 style="margin-top:0;">Cerca de este punto</h3>
+
+                <div style="display:grid; gap:14px; grid-template-columns: 1fr 1fr;">
+                    <div>
+                        <h4 style="margin:0 0 8px 0;">🏨 Hoteles</h4>
+                        <div style="display:grid; gap:8px;">
+                            <a class="card" style="padding:10px;"
+                               th:each="h : ${nearbyHotels}"
+                               th:href="@{'/hotel/' + ${h.id}}">
+                                <div style="display:flex; justify-content:space-between;">
+                                    <div th:text="${h.name}">Hotel</div>
+                                    <div class="muted" th:text="${#numbers.formatDecimal(h.distanceKm, 1, 1)} + ' km'">0.0 km</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="margin:0 0 8px 0;">🍽 Restaurantes</h4>
+                        <div style="display:grid; gap:8px;">
+                            <a class="card" style="padding:10px;"
+                               th:each="r : ${nearbyRestaurants}"
+                               th:href="@{'/restaurant/' + ${r.id}}">
+                                <div style="display:flex; justify-content:space-between;">
+                                    <div th:text="${r.name}">Restaurant</div>
+                                    <div class="muted" th:text="${#numbers.formatDecimal(r.distanceKm, 1, 1)} + ' km'">0.0 km</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card">

@@ -11,6 +11,10 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
+
+<!-- DEBUG: explore template v2 -->
+<div style="display:none">DEBUG-EXPLORE-V2</div>
+
 <div class="container">
     <div class="nav">
         <div class="brand" th:text="'Turistik Explorer · ' + ${city}">Turistik Explorer</div>
@@ -20,22 +24,23 @@
     </div>
 
     <div class="split">
-        <!-- LISTA POIs -->
+        <!-- LISTA LUGARES (POI + HOTEL + RESTAURANT) -->
         <div class="card">
             <h2 style="margin-top:0;">Puntos de interés</h2>
             <div class="muted" th:text="'Total: ' + ${#lists.size(pois)}">Total</div>
 
-            <div style="margin-top:14px; display:grid; gap:10px;">
-                <a class="card" style="padding:12px;" th:each="p : ${pois}" th:href="@{/poi/{id}(id=${p.id})}">
+            <div style="margin-top:14px; display:grid; gap:10px; max-height:600px; overflow:auto;">
+                <a class="card" style="padding:12px;"
+                   th:each="p : ${pois}"
+                   th:href="@{'/poi/' + ${p.id}}">
+
                     <div style="display:flex; justify-content:space-between; gap:12px;">
                         <div>
-                            <span th:if="${p.tipo.name() == 'HOTEL'}">🏨</span>
-                            <span th:if="${p.tipo.name() == 'RESTAURANTE'}">🍽</span>
-                            <span th:if="${p.tipo.name() == 'POI'}">📍</span>
-                            <div class="muted" th:text="${p.categoria}">Categoría</div>
-                            <div class="muted" th:text="${#strings.abbreviate(p.descripcion, 120)}">Desc</div>
+                            <span>📍</span>
+                            <div style="font-weight:600;" th:text="${p.nombre}">Nombre</div>
+                            <div class="muted" th:text="${p.ciudad}">Ciudad</div>
                         </div>
-                        <div class="pill" style="height:fit-content;" th:text="${p.ciudad}">Ciudad</div>
+                        <div class="pill" style="height:fit-content;" th:text="${p.categoria}">Categoría</div>
                     </div>
                 </a>
             </div>
@@ -44,7 +49,7 @@
         <!-- MAPA + CLIMA -->
         <div class="card">
             <h2 style="margin-top:0;">Mapa</h2>
-            <div class="muted">Markers de POIs (Leaflet). Click abre detalle.</div>
+            <div class="muted">Markers de lugares (Leaflet). Click abre detalle.</div>
 
             <!-- Weather glass -->
             <div class="weather-glass" th:if="${weather != null}">
@@ -76,6 +81,7 @@
                     <div class="weather-desc">Tiempo no disponible ahora</div>
                 </div>
             </div>
+
             <div id="map" class="map" style="margin-top:12px;"></div>
         </div>
     </div>
@@ -83,7 +89,25 @@
 
 <script th:inline="javascript">
     const pois = /*[[${pois}]]*/ [];
-    const fallback = { lat: 36.7212, lon: -4.4214 }; // Málaga centro aprox
+    const hotels = /*[[${hotels}]]*/ [];
+    const restaurants = /*[[${restaurants}]]*/ [];
+
+    function distanceKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) *
+            Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    const fallback = { lat: 36.7212, lon: -4.4214 };
 
     let center = fallback;
     if (pois.length > 0 && pois[0].latitud != null && pois[0].longitud != null) {
@@ -97,13 +121,36 @@
     }).addTo(map);
 
     const bounds = [];
+
     pois.forEach(p => {
         if (p.latitud == null || p.longitud == null) return;
 
-        const marker = L.marker([p.latitud, p.longitud]).addTo(map);
-        marker.bindTooltip(`${p.nombre} (${p.categoria})`);
-        marker.on('click', () => window.location.href = `/poi/${p.id}`);
+        const m = L.marker([p.latitud, p.longitud]).addTo(map);
+        m.bindTooltip(`📍 ${p.nombre ?? p.name ?? ''}`);
+        m.on('click', () => {
 
+            console.log("POI seleccionado:", p.nombre);
+
+            const nearbyHotels = hotels
+                .map(h => ({
+                    ...h,
+                    dist: distanceKm(p.latitud, p.longitud, h.latitud, h.longitud)
+                }))
+                .sort((a,b) => a.dist - b.dist)
+                .slice(0,5);
+
+            const nearbyRestaurants = restaurants
+                .map(r => ({
+                    ...r,
+                    dist: distanceKm(p.latitud, p.longitud, r.latitud, r.longitud)
+                }))
+                .sort((a,b) => a.dist - b.dist)
+                .slice(0,5);
+
+            console.log("Hoteles cercanos:", nearbyHotels);
+            console.log("Restaurantes cercanos:", nearbyRestaurants);
+
+        });
         bounds.push([p.latitud, p.longitud]);
     });
 
