@@ -7,14 +7,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Representa un Punto de Interés turístico (monumentos, museos, parques)
- * almacenados en los recursos del servidor.
+ * Representa un lugar turístico del sistema:
+ * POI, HOTEL o RESTAURANTE.
  */
 
 @Entity
 @Table(name = "pois")
 @Getter @Setter
 public class Poi {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,4 +38,38 @@ public class Poi {
     private String imageUrl;
 
     private String ciudad;
+
+    /* ==============================
+       Tipo de lugar
+       ============================== */
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PlaceType tipo = PlaceType.POI;
+
+    /* ==============================
+       Campos específicos HOTEL
+       ============================== */
+
+    private Integer estrellas;
+
+    private Double precioNoche;
+
+    private Boolean tienePiscina;
+
+    /* ==============================
+       Campos específicos RESTAURANTE
+       ============================== */
+
+    private String cuisineType;
+
+    private Double rating;
+
+    private Double averagePrice;
+
+    /* ==============================
+       Dirección común
+       ============================== */
+
+    private String direccion;
 }

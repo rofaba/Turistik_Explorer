@@ -1,6 +1,7 @@
 package com.turistik_explorer.repository;
 
 
+import com.turistik_explorer.model.PlaceType;
 import com.turistik_explorer.model.Poi;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -47,4 +48,5 @@ public interface PoiRepository extends JpaRepository<Poi, Long> {
      * @return Lista de POIs encontrados.
      */
     List<Poi> findByCiudadIgnoreCase(String ciudad);
+    List<Poi> findByCiudadIgnoreCaseAndTipo(String ciudad, PlaceType tipo);
 }

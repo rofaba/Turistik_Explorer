@@ -24,21 +24,20 @@ public class ExploreController {
 
     @GetMapping("/explore")
     public String explore(@RequestParam(name = "city", required = false) String city, Model model) {
-        if (city == null || city.isBlank()) return "redirect:/";
 
-        List<Poi> pois = poiRepository.findByCiudadIgnoreCase(city);
-
-        WeatherInfo weather = null;
-        try {
-            weather = weatherService.getCurrentWeather(city);
-        } catch (Exception ignored) {
-            // si falla la API, la app sigue funcionando
+        if (city == null || city.isBlank()) {
+            return "redirect:/";
         }
 
+        List<Poi> places = poiRepository.findByCiudadIgnoreCase(city);
+
+        WeatherInfo weather = weatherService.getCurrentWeather(city);
+
         model.addAttribute("city", city);
-        model.addAttribute("pois", pois);
+        model.addAttribute("pois", places);
         model.addAttribute("weather", weather);
 
         return "pages/explore";
     }
+
 }
