@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${poi.nombre}">POI</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <div class="brand" th:text="${poi.nombre}">Detalle</div>
+        <div class="links">
+            <a class="pill" th:href="@{/explore(city=${poi.ciudad})}">Volver a Explore</a>
+            <a class="pill" th:href="@{/}">Home</a>
+        </div>
+    </div>
+
+    <div class="split">
+        <div class="card">
+            <div class="pill" th:text="${poi.categoria}">Categoría</div>
+            <h1 style="margin:12px 0 6px;" th:text="${poi.nombre}">Nombre</h1>
+            <div class="muted" th:text="${poi.ciudad}">Ciudad</div>
+
+            <p style="margin-top:14px;" th:text="${poi.descripcion}">Descripción</p>
+            <!-- Imagen -->
+            <div th:if="${poi.imageUrl != null and !#strings.isEmpty(poi.imageUrl)}" style="margin-top:14px;">
+                <img th:src="${poi.imageUrl}" alt="Imagen POI"
+                     style="width:100%; max-height:260px; object-fit:cover; border-radius:16px;">
+            </div>
+
+            <!-- Botones -->
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                <a class="pill"
+                   th:href="'https://www.google.com/maps?q=' + ${poi.latitud} + ',' + ${poi.longitud}"
+                   target="_blank">
+                    Abrir en Google Maps
+                </a>
+
+                <a class="pill" th:href="${poi.imageUrl}" target="_blank"
+                   th:if="${poi.imageUrl != null and !#strings.isEmpty(poi.imageUrl)}">
+                    Abrir imagen
+                </a>
+            </div>
+            <div class="muted" style="margin-top:14px;">
+                Coordenadas:
+                <span th:text="${poi.latitud}">lat</span>,
+                <span th:text="${poi.longitud}">lon</span>
+            </div>
+
+            <div th:if="${poi.imageUrl != null}">
+                <div style="margin-top:14px;" class="muted">Imagen (URL):</div>
+                <a class="pill" th:href="${poi.imageUrl}" target="_blank">Abrir</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-top:0;">Ubicación</h2>
+            <div id="map" class="map" style="margin-top:12px;"></div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const lat = /*[[${poi.latitud}]]*/ 0;
+    const lon = /*[[${poi.longitud}]]*/ 0;
+    const name = /*[[${poi.nombre}]]*/ "POI";
+
+    const map = L.map('map').setView([lat, lon], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([lat, lon]).addTo(map).bindPopup(name).openPopup();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Turistik Explorer</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <div class="brand">Turistik Explorer</div>
+        <div class="links">
+            <a class="pill" th:href="@{/}">Home</a>
+        </div>
+    </div>
+
+    <h1 style="margin:20px 0 6px;">Explora Andalucía</h1>
+    <div class="muted">Elige una ciudad (por ahora: Málaga, Granada, Sevilla y Cádiz).</div>
+
+    <div class="grid">
+        <a class="card" th:each="c : ${cities}" th:href="@{/explore(city=${c})}">
+            <h3 th:text="${c}">Ciudad</h3>
+            <div class="muted">Ver puntos de interés →</div>
+        </a>
+    </div>
+</div>
+</body>
+</html>
