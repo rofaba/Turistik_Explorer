@@ -8,10 +8,14 @@ import com.turistik_explorer.repository.HotelRepository;
 import com.turistik_explorer.repository.PoiRepository;
 import com.turistik_explorer.repository.RestaurantRepository;
 import com.turistik_explorer.web.dto.NearbyPlaceDto;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import static com.turistik_explorer.util.GeoUtils.distanceKm;
@@ -78,5 +82,23 @@ public class PoiController {
         model.addAttribute("nearbyRestaurants", nearbyRestaurants);
 
         return "pages/poi-detail";
+    }
+    @GetMapping("/admin/add-poi")
+    public String addPoiForm(Model model) {
+        model.addAttribute("poi", new Poi());
+        return "admin/add-poi";
+    }
+
+    @PostMapping("/admin/add-poi")
+    public String savePoi(@Valid @ModelAttribute("poi") Poi poi,
+                          BindingResult result) {
+
+        if(result.hasErrors()){
+            return "add-poi";
+        }
+
+        poiRepository.save(poi);
+
+        return "redirect:/explore";
     }
 }

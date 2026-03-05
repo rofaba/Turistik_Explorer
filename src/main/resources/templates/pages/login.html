@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login - Mi Aplicación</title>
+    <style>
+        .error { color: red; margin-bottom: 10px; }
+        .logout { color: green; margin-bottom: 10px; }
+    </style>
 </head>
 <body>
+
+<h2>Login</h2>
+
+<div th:if="${param.error}" class="error">
+    Usuario o contraseña incorrectos.
+</div>
+<div th:if="${param.logout}" class="logout">
+    Has cerrado sesión correctamente.
+</div>
+
+<form th:action="@{/login}" method="post">
+
+    <div>
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" required autofocus>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+
+    <br>
+
+    <button type="submit">Entrar</button>
+
+</form>
 
 </body>
 </html>

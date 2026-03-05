@@ -1,0 +1,73 @@
+<h2>Añadir Lugar</h2>
+
+<form th:action="@{/admin/add-poi}" th:object="${poi}" method="post">
+
+    <h3>Información básica</h3>
+
+    <label>Nombre</label>
+    <input type="text" th:field="*{nombre}" required>
+
+    <label>Descripción</label>
+    <textarea th:field="*{descripcion}"></textarea>
+
+    <label>Ciudad</label>
+    <input type="text" th:field="*{ciudad}">
+
+    <label>Dirección</label>
+    <input type="text" th:field="*{direccion}">
+
+    <label>Imagen (URL)</label>
+    <input type="text" th:field="*{imageUrl}">
+
+
+    <h3>Ubicación</h3>
+
+    <label>Latitud</label>
+    <input type="number" step="0.000001" th:field="*{latitud}">
+
+    <label>Longitud</label>
+    <input type="number" step="0.000001" th:field="*{longitud}">
+
+
+    <h3>Tipo de lugar</h3>
+
+    <label>Tipo</label>
+    <select th:field="*{tipo}">
+        <option value="POI">POI</option>
+        <option value="HOTEL">HOTEL</option>
+        <option value="RESTAURANTE">RESTAURANTE</option>
+    </select>
+
+    <label>Categoría</label>
+    <input type="text" th:field="*{categoria}">
+
+
+    <h3>Datos de hotel</h3>
+
+    <label>Estrellas</label>
+    <input type="number" th:field="*{estrellas}">
+
+    <label>Precio por noche</label>
+    <input type="number" step="0.01" th:field="*{precioNoche}">
+
+    <label>Piscina</label>
+    <input type="checkbox" th:field="*{tienePiscina}">
+
+
+    <h3>Datos de restaurante</h3>
+
+    <label>Tipo de cocina</label>
+    <input type="text" th:field="*{cuisineType}">
+
+    <label>Rating</label>
+    <input type="number" step="0.1" th:field="*{rating}">
+
+    <label>Precio medio</label>
+    <input type="number" step="0.01" th:field="*{averagePrice}">
+
+
+    <br><br>
+
+    <button type="submit">Guardar</button>
+
+</form>

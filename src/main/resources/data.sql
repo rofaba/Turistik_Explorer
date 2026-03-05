@@ -197,3 +197,6 @@ INSERT INTO activity (nombre, descripcion, precio, duracion, ciudad, latitud, lo
                                                                                                       ('Entrada Camara Oscura', 'Vistas en tiempo real de la ciudad.', 7.0, '45min', 'Cádiz', 36.5317, -6.2974, false),
                                                                                                       ('Ruta Gastronomica', 'Cata de pescaos y vinos de Jerez.', 35.0, '2h', 'Cádiz', 36.5312, -6.2995, false),
                                                                                                       ('Surf en la Victoria', 'Clase de iniciacion en la playa.', 25.0, '1.5h', 'Cádiz', 36.5050, -6.2750, true);
+
+INSERT INTO users(username,password,role)
+VALUES ('admin','admin123','ADMIN');
