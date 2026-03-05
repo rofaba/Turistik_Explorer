@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import static com.turistik_explorer.util.GeoUtils.distanceKm;
 
 @Controller
 public class PoiController {
@@ -28,17 +29,7 @@ public class PoiController {
         this.restaurantRepository = restaurantRepository;
     }
 
-    private static double distanceKm(double lat1, double lon1, double lat2, double lon2) {
-        final double R = 6371.0;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-        return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    }
 
     @GetMapping("/poi/{id}")
     public String poiDetail(@PathVariable Long id, Model model) {

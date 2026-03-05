@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title th:text="${restaurant.name}">Restaurant</title>
+
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="nav">
+
+        <div class="brand"
+             th:text="${restaurant.name}">
+            Restaurant
+        </div>
+
+        <div class="links">
+
+            <a class="pill"
+               th:href="@{/explore(city=${restaurant.city})}">
+                Volver a Explore
+            </a>
+
+            <a class="pill"
+               th:href="@{/}">
+                Home
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="split">
+
+        <div class="card">
+
+            <div class="pill">Restaurant</div>
+
+            <h1 style="margin:12px 0 6px;"
+                th:text="${restaurant.name}">
+                Nombre
+            </h1>
+
+            <div class="muted"
+                 th:text="${restaurant.city}">
+                Ciudad
+            </div>
+
+
+            <p style="margin-top:14px;">
+
+                <strong>Dirección:</strong>
+
+                <span th:text="${restaurant.address}"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>Tipo de cocina:</strong>
+
+                <span th:text="${restaurant.cuisineType}"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>Rating:</strong>
+
+                <span th:text="${restaurant.rating}"></span>
+
+                ⭐
+
+            </p>
+
+
+            <p>
+
+                <strong>Precio medio:</strong>
+
+                <span th:text="${restaurant.averagePrice}"></span>
+
+                €
+
+            </p>
+
+
+            <div style="margin-top:14px;">
+
+                <a class="pill"
+                   th:href="'https://www.google.com/maps?q=' + ${restaurant.latitud} + ',' + ${restaurant.longitud}"
+                   target="_blank">
+
+                    Abrir en Google Maps
+
+                </a>
+
+            </div>
+
+
+            <div class="card"
+                 style="margin-top:16px;">
+
+                <h3 style="margin-top:0;">
+                    Cerca de este restaurante
+                </h3>
+
+
+                <div style="display:grid; gap:14px; grid-template-columns:1fr 1fr;">
+
+
+                    <div>
+
+                        <h4 style="margin:0 0 8px 0;">
+                            📍 Puntos de interés
+                        </h4>
+
+                        <div style="display:grid; gap:8px;">
+
+                            <a class="card"
+                               style="padding:10px;"
+                               th:each="p : ${nearbyPois}"
+                               th:href="@{'/poi/' + ${p.id}}">
+
+                                <div style="display:flex; justify-content:space-between;">
+
+                                    <div th:text="${p.name}">
+                                        POI
+                                    </div>
+
+                                    <div class="muted"
+                                         th:text="${#numbers.formatDecimal(p.distanceKm,1,1)} + ' km'">
+                                        0 km
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4 style="margin:0 0 8px 0;">
+                            🏨 Hoteles
+                        </h4>
+
+                        <div style="display:grid; gap:8px;">
+
+                            <a class="card"
+                               style="padding:10px;"
+                               th:each="h : ${nearbyHotels}"
+                               th:href="@{'/hotel/' + ${h.id}}">
+
+                                <div style="display:flex; justify-content:space-between;">
+
+                                    <div th:text="${h.name}">
+                                        Hotel
+                                    </div>
+
+                                    <div class="muted"
+                                         th:text="${#numbers.formatDecimal(h.distanceKm,1,1)} + ' km'">
+                                        0 km
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2 style="margin-top:0;">
+                Ubicación
+            </h2>
+
+            <div id="map"
+                 class="map"
+                 style="margin-top:12px;">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script th:inline="javascript">
+
+    const lat = /*[[${restaurant.latitud}]]*/ 0;
+    const lon = /*[[${restaurant.longitud}]]*/ 0;
+    const name = /*[[${restaurant.name}]]*/ "Restaurant";
+
+
+    const map = L.map('map').setView([lat, lon], 15);
+
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom:19,
+            attribution:'© OpenStreetMap'
+        }
+    ).addTo(map);
+
+    L.marker([lat,lon])
+        .addTo(map)
+        .bindPopup(name)
+        .openPopup();
+
+</script>
+
+</body>
+</html>

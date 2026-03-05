@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${hotel.nombre}">Hotel</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="nav">
+        <div class="brand" th:text="${hotel.nombre}">Hotel</div>
+
+        <div class="links">
+            <a class="pill" th:href="@{/explore(city=${hotel.ciudad})}">
+                Volver a Explore
+            </a>
+
+            <a class="pill" th:href="@{/}">
+                Home
+            </a>
+        </div>
+    </div>
+
+    <div class="split">
+
+        <!-- INFO HOTEL -->
+
+        <div class="card">
+
+            <div class="pill">Hotel</div>
+
+            <h1 style="margin:12px 0 6px;"
+                th:text="${hotel.nombre}">
+                Nombre
+            </h1>
+
+            <div class="muted"
+                 th:text="${hotel.ciudad}">
+                Ciudad
+            </div>
+
+            <p style="margin-top:14px;">
+                <strong>Dirección:</strong>
+                <span th:text="${hotel.direccion}"></span>
+            </p>
+
+            <p>
+                <strong>Estrellas:</strong>
+                <span th:text="${hotel.estrellas}"></span> ⭐
+            </p>
+
+            <p>
+                <strong>Precio por noche:</strong>
+                <span th:text="${hotel.precioNoche}"></span> €
+            </p>
+
+            <p>
+                <strong>Piscina:</strong>
+                <span th:text="${hotel.tienePiscina ? 'Sí' : 'No'}"></span>
+            </p>
+
+            <!-- Botón Google Maps -->
+
+            <div style="margin-top:14px;">
+
+                <a class="pill"
+                   th:href="'https://www.google.com/maps?q=' + ${hotel.latitud} + ',' + ${hotel.longitud}"
+                   target="_blank">
+                    Abrir en Google Maps
+                </a>
+
+            </div>
+
+            <!-- CERCA DEL HOTEL -->
+
+            <div class="card" style="margin-top:16px;">
+
+                <h3 style="margin-top:0;">Cerca de este hotel</h3>
+
+                <div style="display:grid; gap:14px; grid-template-columns: 1fr 1fr;">
+
+                    <!-- POIs -->
+
+                    <div>
+
+                        <h4 style="margin:0 0 8px 0;">📍 Puntos de interés</h4>
+
+                        <div style="display:grid; gap:8px;">
+
+                            <a class="card"
+                               style="padding:10px;"
+                               th:each="p : ${nearbyPois}"
+                               th:href="@{'/poi/' + ${p.id}}">
+
+                                <div style="display:flex; justify-content:space-between;">
+
+                                    <div th:text="${p.name}">
+                                        POI
+                                    </div>
+
+                                    <div class="muted"
+                                         th:text="${#numbers.formatDecimal(p.distanceKm,1,1)} + ' km'">
+                                        0 km
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RESTAURANTES -->
+
+                    <div>
+
+                        <h4 style="margin:0 0 8px 0;">🍽 Restaurantes</h4>
+
+                        <div style="display:grid; gap:8px;">
+
+                            <a class="card"
+                               style="padding:10px;"
+                               th:each="r : ${nearbyRestaurants}"
+                               th:href="@{'/restaurant/' + ${r.id}}">
+
+                                <div style="display:flex; justify-content:space-between;">
+
+                                    <div th:text="${r.name}">
+                                        Restaurant
+                                    </div>
+
+                                    <div class="muted"
+                                         th:text="${#numbers.formatDecimal(r.distanceKm,1,1)} + ' km'">
+                                        0 km
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MAPA -->
+
+        <div class="card">
+
+            <h2 style="margin-top:0;">Ubicación</h2>
+
+            <div id="map"
+                 class="map"
+                 style="margin-top:12px;">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script th:inline="javascript">
+
+    const lat = [[${hotel.latitud}]];
+    const lon = [[${hotel.longitud}]];
+    const name = [[${hotel.nombre}]];
+
+    const map = L.map('map').setView([lat, lon], 15);
+
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom:19,
+            attribution:'© OpenStreetMap'
+        }
+    ).addTo(map);
+
+    L.marker([lat,lon])
+        .addTo(map)
+        .bindPopup(name)
+        .openPopup();
+
+</script>
+
+</body>
+</html>
