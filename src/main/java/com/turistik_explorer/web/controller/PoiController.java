@@ -43,7 +43,7 @@ public class PoiController {
 
         String city = poi.getCiudad();
 
-        // Trae de la misma ciudad (rápido). Si tu repo de Restaurant es findByCityIgnoreCase ya lo tienes.
+        // Trae de la misma ciudad.
         List<Hotel> hotels = hotelRepository.findByCiudadIgnoreCase(city);
         List<Restaurant> restaurants = restaurantRepository.findByCityIgnoreCase(city);
 

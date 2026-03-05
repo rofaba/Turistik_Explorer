@@ -127,32 +127,23 @@
 
         const m = L.marker([p.latitud, p.longitud]).addTo(map);
         m.bindTooltip(`📍 ${p.nombre ?? p.name ?? ''}`);
-        m.on('click', () => {
+        pois.forEach(p => {
+            if (p.latitud == null || p.longitud == null) return;
 
-            console.log("POI seleccionado:", p.nombre);
+            const m = L.marker([p.latitud, p.longitud]).addTo(map);
 
-            const nearbyHotels = hotels
-                .map(h => ({
-                    ...h,
-                    dist: distanceKm(p.latitud, p.longitud, h.latitud, h.longitud)
-                }))
-                .sort((a,b) => a.dist - b.dist)
-                .slice(0,5);
+            m.bindTooltip(`📍 ${p.nombre ?? ''}`);
 
-            const nearbyRestaurants = restaurants
-                .map(r => ({
-                    ...r,
-                    dist: distanceKm(p.latitud, p.longitud, r.latitud, r.longitud)
-                }))
-                .sort((a,b) => a.dist - b.dist)
-                .slice(0,5);
+            m.on('click', () => {
+                window.location.href = "/poi/" + p.id;
+            });
 
-            console.log("Hoteles cercanos:", nearbyHotels);
-            console.log("Restaurantes cercanos:", nearbyRestaurants);
-
+            bounds.push([p.latitud, p.longitud]);
         });
         bounds.push([p.latitud, p.longitud]);
     });
+
+
 
     if (bounds.length > 1) map.fitBounds(bounds, { padding: [20, 20] });
 </script>
