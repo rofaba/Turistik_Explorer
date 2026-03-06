@@ -42,19 +42,19 @@
 
                 <a class="pill" th:href="${poi.imageUrl}" target="_blank"
                    th:if="${poi.imageUrl != null and !#strings.isEmpty(poi.imageUrl)}">
-                    Abrir imagen
+
                 </a>
             </div>
-            <div class="muted" style="margin-top:14px;">
+            <!--<div class="muted" style="margin-top:14px;">
                 Coordenadas:
                 <span th:text="${poi.latitud}">lat</span>,
                 <span th:text="${poi.longitud}">lon</span>
-            </div>
+           </div>
 
-            <div th:if="${poi.imageUrl != null}">
+           <div th:if="${poi.imageUrl != null}">
                 <div style="margin-top:14px;" class="muted">Imagen (URL):</div>
                 <a class="pill" th:href="${poi.imageUrl}" target="_blank">Abrir</a>
-            </div>
+            </div>-->
             <div class="card" style="margin-top:16px;">
                 <h3 style="margin-top:0;">Cerca de este punto</h3>
 
