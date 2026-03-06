@@ -2,6 +2,7 @@ package com.turistik_explorer.web.controller;
 
 
 import com.turistik_explorer.model.Hotel;
+import com.turistik_explorer.model.PlaceType;
 import com.turistik_explorer.model.Poi;
 import com.turistik_explorer.model.Restaurant;
 import com.turistik_explorer.repository.HotelRepository;
@@ -93,12 +94,14 @@ public class PoiController {
     public String savePoi(@Valid @ModelAttribute("poi") Poi poi,
                           BindingResult result) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "add-poi";
         }
+        poi.setTipo(PlaceType.POI);
 
+        // Guardamos en PoiRepository
         poiRepository.save(poi);
 
-        return "redirect:/explore";
+        return "redirect:/explore?city=" + poi.getCiudad();
     }
 }
