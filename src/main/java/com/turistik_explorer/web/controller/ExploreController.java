@@ -52,13 +52,13 @@ public class ExploreController {
         List<Hotel> hotels = hotelRepository.findByCiudadIgnoreCase(city);
         List<Restaurant> restaurants = restaurantRepository.findByCityIgnoreCase(city);
 
-        // Debug rápido (puedes borrarlo luego)
+        // Debug
         System.out.println("CITY=" + city
                 + " | POIS=" + pois.size()
                 + " | HOTELS=" + hotels.size()
                 + " | RESTAURANTS=" + restaurants.size());
 
-        // Fallback por acentos / espacios (solo si salen vacíos)
+        // Fallback por acentos
         String cityNorm = norm(city);
 
         if (hotels.isEmpty()) {

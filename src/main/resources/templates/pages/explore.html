@@ -17,6 +17,8 @@
         <div class="brand" th:text="'Turistik Explorer · ' + ${city}">Turistik Explorer</div>
         <div class="links">
             <a class="pill" th:href="@{/}">Cambiar ciudad</a>
+            <a class="pill" th:href="@{/admin/add-poi}">Agregar Punto de Interés</a>
+
         </div>
     </div>
 
@@ -56,8 +58,7 @@
 
         <!-- MAPA + CLIMA -->
         <div class="card">
-            <h2 style="margin-top:0;">Mapa</h2>
-            <div class="muted">Markers de lugares (Leaflet). Click abre detalle.</div>
+            <h2 style="margin-top:0;">El Tiempo</h2>
 
             <!-- Weather glass -->
             <div class="weather-glass" th:if="${weather != null}">
@@ -91,9 +92,12 @@
             </div>
 
             <div id="map" class="map" style="margin-top:12px;"></div>
+            <div class="muted">Markers de lugares (Leaflet). Click abre detalle.</div>
+
         </div>
     </div>
 </div>
+
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 
@@ -102,25 +106,10 @@
     const hotels = /*[[${hotels}]]*/ [];
     const restaurants = /*[[${restaurants}]]*/ [];
 
-    function distanceKm(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-
-        const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) *
-            Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-        return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    }
-
     const fallback = { lat: 36.7212, lon: -4.4214 };
-
     let center = fallback;
-    if (pois.length > 0 && pois[0].latitud != null && pois[0].longitud != null) {
+
+    if (pois.length > 0) {
         center = { lat: pois[0].latitud, lon: pois[0].longitud };
     }
 
@@ -132,30 +121,37 @@
 
     const bounds = [];
 
-    pois.forEach(p => {
-        if (p.latitud == null || p.longitud == null) return;
-
-        const m = L.marker([p.latitud, p.longitud]).addTo(map);
-        m.bindTooltip(`📍 ${p.nombre ?? p.name ?? ''}`);
-        pois.forEach(p => {
-            if (p.latitud == null || p.longitud == null) return;
-
-            const m = L.marker([p.latitud, p.longitud]).addTo(map);
-
-            m.bindTooltip(`📍 ${p.nombre ?? ''}`);
-
-            m.on('click', () => {
-                window.location.href = "/poi/" + p.id;
+    // Función para añadir marcadores
+    function addMarker(item, iconEmoji, redirectPath) {
+        if (item.latitud && item.longitud) {
+            // Creamos un icono de texto con el emoji
+            const emojiIcon = L.divIcon({
+                html: `<div style="font-size: 18px; background: rgba(255, 255, 255, 0.7); border-radius: 50%; padding: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); border: 0.3px solid black;">${iconEmoji}</div>`,
+                className: 'custom-emoji-marker',
+                iconSize: [35, 10],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -20]
             });
 
-            bounds.push([p.latitud, p.longitud]);
-        });
-        bounds.push([p.latitud, p.longitud]);
-    });
+            const m = L.marker([item.latitud, item.longitud], { icon: emojiIcon }).addTo(map);
 
+            m.bindTooltip(item.nombre || item.name);
+            m.on('click', () => {
+                window.location.href = redirectPath + item.id;
+            });
 
+            bounds.push([item.latitud, item.longitud]);
+        }
+    }
 
-    if (bounds.length > 1) map.fitBounds(bounds, { padding: [20, 20] });
+    // Un bucle para cada lista
+    pois.forEach(p => addMarker(p, '📍', '/poi/'));
+    hotels.forEach(h => addMarker(h, '🏨', '/hotel/'));
+    restaurants.forEach(r => addMarker(r, '🍴', '/restaurant/'));
+
+    if (bounds.length > 0) {
+        map.fitBounds(bounds, { padding: [30, 30] });
+    }
 </script>
 </body>
 </html>
