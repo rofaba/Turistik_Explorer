@@ -7,23 +7,71 @@
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
-<div class="container">
-    <div class="nav">
-        <div class="brand">Turistik Explorer</div>
-        <div class="links">
-            <a class="pill" th:href="@{/}">Home</a>
-        </div>
+<!-- NAVBAR -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- HERO -->
+<section class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1>Explora Andalucía</h1>
+
+        <p>
+            Descubre la magia del sur de España.
+            Desde Sierra Nevada hasta las playas de Cádiz.
+        </p>
+
     </div>
 
-    <h1 style="margin:20px 0 6px;">Explora Andalucía</h1>
-    <div class="muted">Elige una ciudad (por ahora: Málaga, Granada, Sevilla y Cádiz).</div>
+</section>
 
-    <div class="grid">
-        <a class="card" th:each="c : ${cities}" th:href="@{/explore(city=${c})}">
-            <h3 th:text="${c}">Ciudad</h3>
-            <div class="muted">Ver puntos de interés →</div>
+
+<!-- DESTINOS -->
+<section class="destinations" id="destinos">
+
+    <h2>Destinos destacados</h2>
+    <p class="muted">Selecciona una ciudad para empezar</p>
+
+    <div class="dest-grid">
+
+        <a class="dest-card" th:href="@{/explore(city='Málaga')}">
+            <img src="https://blog.visitacostadelsol.com/hubfs/que%20ver%20en%20Malaga.webp">
+            <div class="dest-info">
+                <h3>Málaga</h3>
+                <span>Explorar</span>
+            </div>
         </a>
+
+        <a class="dest-card" th:href="@{/explore(city='Granada')}">
+            <img src="https://bevents-spain.com/wp-content/uploads/2019/07/Granada-d%C3%ADa.jpg">
+            <div class="dest-info">
+                <h3>Granada</h3>
+                <span>Explorar</span>
+            </div>
+        </a>
+
+        <a class="dest-card" th:href="@{/explore(city='Sevilla')}">
+            <img src="https://www.vintagetravel.co.uk/blog/wp-content/uploads/2016/09/shutterstock_179024282-920x614.jpg">
+            <div class="dest-info">
+                <h3>Sevilla</h3>
+                <span>Explorar</span>
+            </div>
+        </a>
+
+        <a class="dest-card" th:href="@{/explore(city='Cádiz')}">
+            <img src="https://images.winalist.com/blog/wp-content/uploads/2025/05/12154338/adobestock-102928176-1536x1024.jpeg.webp">
+            <div class="dest-info">
+                <h3>Cádiz</h3>
+                <span>Explorar</span>
+            </div>
+        </a>
+
     </div>
-</div>
+
+</section>
+<!-- FOOTER -->
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

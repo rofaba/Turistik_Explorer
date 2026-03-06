@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
+
+<header class="nav" th:fragment="navbar">
+
+    <div class="brand">Turistik Explorer</div>
+
+    <div class="links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/destinations}">Destinos</a>
+        <a th:href="@{/about}">Sobre nosotros</a>
+    </div>
+
+</header>
 
 </body>
 </html>

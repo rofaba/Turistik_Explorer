@@ -97,6 +97,8 @@
     </div>
 </div>
 
+<div th:replace="fragments/footer :: footer"></div>
+
 <script th:inline="javascript">
     const lat = /*[[${poi.latitud}]]*/ 0;
     const lon = /*[[${poi.longitud}]]*/ 0;
