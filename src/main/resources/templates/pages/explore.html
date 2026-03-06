@@ -20,26 +20,37 @@
         </div>
     </div>
 
+    <div th:replace="fragments/city-hero :: city-hero"></div>
+
     <div class="split">
         <!-- LISTA LUGARES (POI + HOTEL + RESTAURANT) -->
         <div class="card">
             <h2 style="margin-top:0;">Puntos de interés</h2>
             <div class="muted" th:text="'Total: ' + ${#lists.size(pois)}">Total</div>
 
-            <div style="margin-top:14px; display:grid; gap:10px; max-height:600px; overflow:auto;">
-                <a class="card" style="padding:12px;"
-                   th:each="p : ${pois}"
-                   th:href="@{'/poi/' + ${p.id}}">
+            <div style="margin-top:14px; display:grid; gap:10px; max-height:1080px; overflow:auto;">
+                <div class="poi-card"
+                     th:each="p : ${pois}"
+                     th:onclick="|window.location.href='/poi/${p.id}'|">
 
-                    <div style="display:flex; justify-content:space-between; gap:12px;">
-                        <div>
-                            <span>📍</span>
-                            <div style="font-weight:600;" th:text="${p.nombre}">Nombre</div>
-                            <div class="muted" th:text="${p.ciudad}">Ciudad</div>
-                        </div>
-                        <div class="pill" style="height:fit-content;" th:text="${p.categoria}">Categoría</div>
+                    <img class="poi-img"
+                         th:src="${p.imageUrl}"
+                         alt="poi">
+
+                    <div class="poi-info">
+
+                        <div class="poi-title" th:text="${p.nombre}">Nombre</div>
+
+                        <div class="poi-city" th:text="${p.ciudad}">Ciudad</div>
+
                     </div>
-                </a>
+
+                    <div class="poi-type"
+                         th:text="${p.categoria}">
+                        Tipo
+                    </div>
+
+                </div>
             </div>
         </div>
 
