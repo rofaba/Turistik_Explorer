@@ -1,82 +1,34 @@
 package com.turistik_explorer.web.controller;
 
 
-import com.turistik_explorer.model.Hotel;
 import com.turistik_explorer.model.PlaceType;
 import com.turistik_explorer.model.Poi;
-import com.turistik_explorer.model.Restaurant;
-import com.turistik_explorer.repository.HotelRepository;
-import com.turistik_explorer.repository.PoiRepository;
-import com.turistik_explorer.repository.RestaurantRepository;
+import com.turistik_explorer.service.poi.PoiService;
 import com.turistik_explorer.web.dto.NearbyPlaceDto;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import static com.turistik_explorer.util.GeoUtils.distanceKm;
 
 @Controller
 public class PoiController {
 
-    private final PoiRepository poiRepository;
-    private final HotelRepository hotelRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final PoiService poiService;
 
-    public PoiController(PoiRepository poiRepository, HotelRepository hotelRepository, RestaurantRepository restaurantRepository) {
-        this.poiRepository = poiRepository;
-        this.hotelRepository = hotelRepository;
-        this.restaurantRepository = restaurantRepository;
+    public PoiController(PoiService poiService) {
+        this.poiService = poiService;
     }
-
-
 
     @GetMapping("/poi/{id}")
     public String poiDetail(@PathVariable Long id, Model model) {
+        Poi poi = poiService.findById(id);
 
-        Poi poi = poiRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("POI no encontrado: " + id));
-
-        String city = poi.getCiudad();
-
-        // Trae de la misma ciudad.
-        List<Hotel> hotels = hotelRepository.findByCiudadIgnoreCase(city);
-        List<Restaurant> restaurants = restaurantRepository.findByCityIgnoreCase(city);
-
-        // Top 5 hoteles cercanos
-        List<NearbyPlaceDto> nearbyHotels = hotels.stream()
-                .filter(h -> h.getLatitud() != null && h.getLongitud() != null)
-                .map(h -> new NearbyPlaceDto(
-                        h.getId(),
-                        h.getNombre(),
-                        h.getLatitud(),
-                        h.getLongitud(),
-                        distanceKm(poi.getLatitud(), poi.getLongitud(), h.getLatitud(), h.getLongitud()),
-                        "HOTEL"
-                ))
-                .sorted((a, b) -> Double.compare(a.getDistanceKm(), b.getDistanceKm()))
-                .limit(5)
-                .toList();
-
-        // Top 5 restaurantes cercanos
-        List<NearbyPlaceDto> nearbyRestaurants = restaurants.stream()
-                .filter(r -> r.getLatitud() != null && r.getLongitud() != null)
-                .map(r -> new NearbyPlaceDto(
-                        r.getId(),
-                        r.getName(),
-                        r.getLatitud(),
-                        r.getLongitud(),
-                        distanceKm(poi.getLatitud(), poi.getLongitud(), r.getLatitud(), r.getLongitud()),
-                        "RESTAURANT"
-                ))
-                .sorted((a, b) -> Double.compare(a.getDistanceKm(), b.getDistanceKm()))
-                .limit(5)
-                .toList();
+        // Delegamos el cálculo de cercanía al servicio
+        List<NearbyPlaceDto> nearbyHotels = poiService.getNearbyHotels(poi, 5);
+        List<NearbyPlaceDto> nearbyRestaurants = poiService.getNearbyRestaurants(poi, 5);
 
         model.addAttribute("poi", poi);
         model.addAttribute("nearbyHotels", nearbyHotels);
@@ -84,6 +36,7 @@ public class PoiController {
 
         return "pages/poi-detail";
     }
+
     @GetMapping("/admin/add-poi")
     public String addPoiForm(Model model) {
         model.addAttribute("poi", new Poi());
@@ -91,16 +44,13 @@ public class PoiController {
     }
 
     @PostMapping("/admin/add-poi")
-    public String savePoi(@Valid @ModelAttribute("poi") Poi poi,
-                          BindingResult result) {
-
+    public String savePoi(@Valid @ModelAttribute("poi") Poi poi, BindingResult result) {
         if (result.hasErrors()) {
-            return "add-poi";
+            return "admin/add-poi";
         }
-        poi.setTipo(PlaceType.POI);
 
-        // Guardamos en PoiRepository
-        poiRepository.save(poi);
+        poi.setTipo(PlaceType.POI);
+        poiService.save(poi);
 
         return "redirect:/explore?city=" + poi.getCiudad();
     }

@@ -179,9 +179,14 @@
 
 <script th:inline="javascript">
 
+    /*
     const lat = [[${hotel.latitud}]];
     const lon = [[${hotel.longitud}]];
-    const name = [[${hotel.nombre}]];
+    const name = [[${hotel.nombre}]];*/
+
+    const lat = /*[[${hotel.latitud}]]*/ 0;
+    const lon = /*[[${hotel.longitud}]]*/ 0;
+    const name = /*[[${hotel.nombre}]]*/ "HOTEL";
 
     const map = L.map('map').setView([lat, lon], 15);
 

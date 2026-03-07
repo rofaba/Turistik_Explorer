@@ -162,7 +162,7 @@ input, textarea, select {
 .dest-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:20px;
+    gap:30px;
     margin-top:25px;
 }
 
