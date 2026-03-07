@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -17,7 +19,9 @@
         <div class="brand" th:text="'Turistik Explorer · ' + ${city}">Turistik Explorer</div>
         <div class="links">
             <a class="pill" th:href="@{/}">Cambiar ciudad</a>
-            <a class="pill" th:href="@{/admin/add-poi}">Agregar Punto de Interés</a>
+            <a class="pill" th:href="@{/admin/pois}" sec:authorize="isAuthenticated()">
+                ⚙️ Panel Admin
+            </a>
 
         </div>
     </div>
