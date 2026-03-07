@@ -59,18 +59,45 @@ Pantalla principal con lista de puntos de interés y mapa con marcadores sincron
 ## ⚙️ Instalación y Uso
 
 ### 📋 Requisitos Previos
-Para levantar este proyecto en tu máquina local, necesitas tener instalado:
-- [Java 21](https://jdk.java.net/21/)
-- [Maven](https://maven.apache.org/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (o Docker Engine)
+Para levantar este proyecto, solo necesitas tener instalado:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (o Docker Engine con Docker Compose)
+- *(Opcional para desarrollo: Java 21 y Maven)*
 
 ### 1️⃣ Clonar el repositorio
 ```bash
-git clone [https://github.com/tuusuario/turistik-explorer.git]  
+git clone [https://github.com/tuusuario/turistik-explorer.git](https://github.com/tuusuario/turistik-explorer.git)
 cd turistik-explorer
-
 ```
+2️⃣ Despliegue rápido con Docker (RECOMENDADO) 🐳  
 
+El proyecto está completamente contenedorizado (App + Base de Datos).  
+Para compilar el código y levantar toda la infraestructura al mismo tiempo, simplemente ejecuta en la raíz del proyecto:
+
+```bash
+docker compose up --build -d  
+```
+💡 Nota: La primera vez tardará un poco porque descargará el entorno Java, compilará la aplicación y configurará PostgreSQL.  
+Además, las tablas y los datos de prueba se cargarán automáticamente.
+
+3️⃣ Abrir en el navegador.  
+Una vez que los contenedores estén corriendo, visita en tu navegador:  
+
+👉 http://localhost:8081
+
+---
+
+🛠️ Para Desarrollo Local (Modo Programador)  
+
+Levanta solo el contenedor de la base de datos:
+
+```bash
+docker compose up -d db
+```
+Ejecuta la aplicación de forma local desde tu IDE o consola:
+
+```bash
+mvn spring-boot:run
+```
 ### 2️⃣ Levantar la Base de Datos (Docker)
 
 El proyecto está configurado para levantar una instancia de PostgreSQL en un contenedor de Docker. Ejecuta el siguiente comando en la raíz del proyecto:
