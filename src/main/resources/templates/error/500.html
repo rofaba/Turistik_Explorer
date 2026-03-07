@@ -1,20 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Turistik Explorer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 500 - Problema Interno</title>
+
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+
+    <style>
+        .error-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 200px);
+            text-align: center;
+        }
+
+        .error-card {
+            max-width: 500px;
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .error-emoji {
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            /* Animación de engranaje girando */
+            animation: spin 6s linear infinite;
+        }
+
+        .error-code {
+            font-size: 6rem;
+            font-weight: 900;
+            margin: 0;
+            /* Efecto de texto con degradado rojizo/naranja para indicar alerta técnica */
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .error-title {
+            color: #2c3e50;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .error-details {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            background: rgba(0,0,0,0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            word-wrap: break-word;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-<h1>Turistik Explorer</h1>
+<div class="container">
+    <div class="nav">
+        <div class="brand">Turistik Explorer</div>
+        <div class="links">
+            <a class="pill" th:href="@{/}">🏠 Inicio</a>
+        </div>
+    </div>
 
-<p>Explora Andalucía</p>
+    <div class="error-wrapper">
+        <div class="error-card">
+            <div class="error-emoji">⚙️</div>
+            <h1 class="error-code">500</h1>
+            <h2 class="error-title">¡Ups! Tuvimos unas turbulencias</h2>
 
-<ul>
-    <li>Málaga</li>
-    <li>Granada</li>
-    <li>Sevilla</li>
-    <li>Cádiz</li>
-</ul>
+            <p class="error-message">
+                Algo se ha roto en la sala de máquinas de Turistik Explorer. Nuestro equipo de mecánicos ya ha sido notificado y está trabajando en ello.
+            </p>
+
+            <div th:if="${message}" class="error-details">
+                <strong>Detalle técnico:</strong> <span th:text="${message}">Error desconocido</span>
+            </div>
+
+            <a th:href="@{/}" class="btn-save" style="display: inline-block; text-decoration: none; width: auto; padding: 12px 30px;">
+                Volver al campamento base
+            </a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

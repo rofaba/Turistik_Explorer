@@ -1,5 +1,6 @@
 package com.turistik_explorer.service.poi;
 
+import com.turistik_explorer.exception.NotFoundException;
 import com.turistik_explorer.model.Hotel;
 import com.turistik_explorer.model.Poi;
 import com.turistik_explorer.model.Restaurant;
@@ -32,7 +33,7 @@ public class PoiService {
 
     public Poi findById(Long id) {
         return poiRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("POI no encontrado: " + id));
+                .orElseThrow(() -> new NotFoundException("El Punto de Interés con ID " + id + " no existe."));
     }
 
     public List<NearbyPlaceDto> getNearbyHotels(Poi poi, int limit) {

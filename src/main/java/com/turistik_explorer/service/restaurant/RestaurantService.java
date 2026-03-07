@@ -1,5 +1,6 @@
 package com.turistik_explorer.service.restaurant;
 
+import com.turistik_explorer.exception.NotFoundException;
 import com.turistik_explorer.model.Hotel;
 import com.turistik_explorer.model.Poi;
 import com.turistik_explorer.model.Restaurant;
@@ -34,7 +35,7 @@ public class RestaurantService {
 
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Restaurant no encontrado: " + id));
+                .orElseThrow(() -> new NotFoundException("El Restaurante con ID " + id + " no existe."));
     }
 
     public List<NearbyPlaceDto> getNearbyPois(Restaurant restaurant, int limit) {

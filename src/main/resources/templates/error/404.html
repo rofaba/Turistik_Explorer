@@ -1,10 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404 - Ruta no encontrada</title>
+
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+
+    <style>
+        .error-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 200px);
+            text-align: center;
+        }
+
+        .error-card {
+            max-width: 500px;
+            padding: 50px 40px;
+            /* Reutilizamos el estilo de tarjeta pero lo hacemos más grande */
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .error-emoji {
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-code {
+            font-size: 6rem;
+            font-weight: 900;
+            margin: 0;
+            /* Efecto de texto con degradado */
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .error-title {
+            color: #2c3e50;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        /* Pequeña animación para la brújula */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+    </style>
 </head>
 <body>
+
+<div class="container">
+    <div class="nav">
+        <div class="brand">Turistik Explorer</div>
+        <div class="links">
+            <a class="pill" th:href="@{/}">🏠 Inicio</a>
+        </div>
+    </div>
+
+    <div class="error-wrapper">
+        <div class="error-card">
+            <div class="error-emoji">🧭</div>
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">¡Ups! Te has salido del mapa</h2>
+
+            <p class="error-message">
+                Parece que has explorado demasiado lejos. La ruta que buscas no existe, ha sido movida o la dirección es incorrecta.
+                <br><br>
+                ¡Pero no te preocupes, hay muchos destinos increíbles esperándote!
+            </p>
+
+            <a th:href="@{/}" class="btn-save" style="display: inline-block; text-decoration: none; width: auto; padding: 12px 30px;">
+                Volver a la ruta segura
+            </a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

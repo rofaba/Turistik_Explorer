@@ -37,7 +37,7 @@ public class ExploreService {
     private String norm(String s) {
         if (s == null) return "";
         String n = Normalizer.normalize(s.trim(), Normalizer.Form.NFD);
-        n = n.replaceAll("\\p{M}", ""); // Quita marcas diacríticas (acentos)
+        n = n.replaceAll("\\p{M}", "");
         return n.toLowerCase(Locale.ROOT);
     }
 
