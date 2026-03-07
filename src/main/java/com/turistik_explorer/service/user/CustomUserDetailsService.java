@@ -5,8 +5,11 @@ import com.turistik_explorer.repository.UserRepository;
 
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
+ /**
+ * Servicio personalizado para cargar detalles de usuario desde la base de datos.
+*/
 
-@Service
+  @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository repo;

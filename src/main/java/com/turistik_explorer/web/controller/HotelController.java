@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+/**
+ * Controlador para manejar las solicitudes relacionadas con los hoteles y mostrar los lugares cercanos (POIs y restaurantes).
+ */
 
 @Controller
 public class HotelController {

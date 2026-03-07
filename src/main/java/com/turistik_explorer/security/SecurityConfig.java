@@ -6,6 +6,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Security configuration for the application.
+ * This class defines the security filter chain and password encoder.
+ */
+
 @Configuration
 public class SecurityConfig {
 

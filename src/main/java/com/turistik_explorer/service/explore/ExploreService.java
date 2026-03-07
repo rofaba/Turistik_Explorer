@@ -12,6 +12,10 @@ import java.text.Normalizer;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Servicio para obtener POIs, hoteles y restaurantes por ciudad, con normalización de texto.
+ */
+
 @Service
 public class ExploreService {
 

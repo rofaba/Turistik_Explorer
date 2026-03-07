@@ -1,5 +1,8 @@
 package com.turistik_explorer.web.dto;
 
+/**
+ * DTO for nearby places (hotels and restaurants).
+ */
 
 public class NearbyPlaceDto {
     private Long id;

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Servicio para manejar operaciones relacionadas con restaurantes, incluyendo búsqueda de POIs y hoteles cercanos.
+ */
+
 @Service
 public class RestaurantService {
 

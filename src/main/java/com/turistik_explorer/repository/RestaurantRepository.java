@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+/*
+ * Repositorio para la entidad Restaurant, con métodos personalizados para búsquedas por ciudad, tipo de cocina, rating y proximidad geográfica.
+ */
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {

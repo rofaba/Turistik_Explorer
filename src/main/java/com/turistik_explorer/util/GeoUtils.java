@@ -1,5 +1,9 @@
 package com.turistik_explorer.util;
 
+/**
+ * Utility class for geographical calculations.
+ */
+
 public class GeoUtils {
     private GeoUtils() {}
 

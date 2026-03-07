@@ -8,6 +8,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Repositorio para la entidad Hotel, que extiende JpaRepository para proporcionar métodos CRUD.
+ * Además, incluye métodos personalizados para buscar hoteles por ciudad y por proximidad geográfica.
+ */
+
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> findByCiudadIgnoreCase(String ciudad);
 

@@ -11,6 +11,9 @@ import com.turistik_explorer.util.GeoUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+/**
+ * Servicio para manejar operaciones relacionadas con POIs, incluyendo búsqueda de hoteles y restaurantes cercanos.
+ */
 
 @Service
 public class PoiService {

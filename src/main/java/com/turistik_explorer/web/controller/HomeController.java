@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+/**
+ * Controller for handling home page requests.
+ */
 
 @Controller
 public class HomeController {

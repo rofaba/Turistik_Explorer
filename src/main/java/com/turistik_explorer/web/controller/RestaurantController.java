@@ -10,6 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+/**
+ * Controlador para manejar las solicitudes relacionadas con los restaurantes, incluyendo la visualización de detalles y lugares cercanos.
+ */
+
 import java.util.List;
 
 @Controller

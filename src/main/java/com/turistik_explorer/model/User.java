@@ -2,6 +2,9 @@ package com.turistik_explorer.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad que representa a un usuario del sistema.
+ */
 @Entity
 @Table(name = "users")
 public class User {

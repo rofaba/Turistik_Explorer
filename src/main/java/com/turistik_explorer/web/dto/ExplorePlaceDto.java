@@ -1,5 +1,9 @@
 package com.turistik_explorer.web.dto;
 
+/**
+ * DTO para representar un lugar a explorar (POI, hotel o restaurante) en la respuesta de la API.
+ */
+
 public class ExplorePlaceDto {
 
     private Long id;
@@ -27,8 +31,7 @@ public class ExplorePlaceDto {
         return name;
     }
 
-    // Importante: getters con nombre "Latitud/Longitud" para que en JS exista p.latitud / p.longitud
-    public Double getLatitud() {
+   public Double getLatitud() {
         return latitud;
     }
 

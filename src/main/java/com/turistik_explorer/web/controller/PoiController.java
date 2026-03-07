@@ -12,6 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+/**
+ * Controlador para manejar las vistas relacionadas con los Puntos de Interés (POIs).
+ * Permite mostrar detalles de un POI, así como agregar nuevos POIs desde el panel de administración.
+ */
 
 @Controller
 public class PoiController {

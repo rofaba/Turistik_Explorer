@@ -6,6 +6,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Locale;
 
+/**
+ * Implementación de WeatherService que consume la API de OpenWeather.
+ */
+
 @Service
 public class OpenWeatherService implements WeatherService {
 
