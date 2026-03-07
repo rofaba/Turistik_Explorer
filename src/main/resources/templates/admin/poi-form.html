@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario POI</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="nav">
+        <div class="brand">Panel de Administración</div>
+        <div class="links">
+            <a class="pill" th:href="@{/admin/pois}">⬅ Volver a la lista</a>
+        </div>
+    </div>
+
+    <form th:action="@{/admin/add-poi}" th:object="${poi}" method="post" class="form-poi">
+
+        <h3 th:text="${poi.id == null ? 'Añadir Nuevo Punto de Interés' : 'Editar Punto de Interés'}">
+            Formulario POI
+        </h3>
+
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{tipo}">
+
+        <div class="row">
+            <div class="field">
+                <label>Nombre</label>
+                <input type="text" th:field="*{nombre}" required placeholder="Ej: La Alhambra">
+            </div>
+            <div class="field">
+                <label>Ciudad</label>
+                <input type="text" th:field="*{ciudad}" required placeholder="Ej: Granada">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label>Categoría</label>
+                <input type="text" th:field="*{categoria}" placeholder="Ej: Monumento, Parque...">
+            </div>
+            <div class="field">
+                <label>URL de Imagen</label>
+                <input type="url" th:field="*{imageUrl}" placeholder="https://...">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label>Latitud</label>
+                <input type="number" step="any" th:field="*{latitud}">
+            </div>
+            <div class="field">
+                <label>Longitud</label>
+                <input type="number" step="any" th:field="*{longitud}">
+            </div>
+        </div>
+
+        <div class="field" style="margin-bottom: 20px;">
+            <label>Descripción</label>
+            <textarea th:field="*{descripcion}" rows="4" placeholder="Escribe algo sobre este lugar..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-save">💾 Guardar POI</button>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Admin - POIs</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <style>
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .admin-table th { background: rgba(0,0,0,0.05); font-weight: 600; }
+        .admin-table tr:hover { background: rgba(255, 255, 255, 0.6); }
+        .action-btns { display: flex; gap: 8px; }
+
+        .btn-edit { background: #3498db; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; }
+        .btn-delete { background: #e74c3c; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; border: none; cursor: pointer; }
+
+        /* Estilo para el buscador */
+        .search-bar {
+            width: 100%;
+            max-width: 350px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        .search-bar:focus { outline: none; border-color: #3498db; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav">
+        <div class="brand">Panel de Administración</div>
+        <div class="links">
+            <a class="pill" th:href="@{/admin/add-poi}">+ Añadir Nuevo POI</a>
+            <a class="pill" th:href="@{/}">Volver a la Web</a>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
+            <h2 style="margin: 0;">Gestión de Puntos de Interés</h2>
+
+            <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Buscar por nombre o ciudad...">
+        </div>
+
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <tr th:each="p : ${pois}">
+                <td th:text="${p.id}">1</td>
+                <td>
+                    <img th:src="${p.imageUrl}" alt="poi" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;">
+                </td>
+                <td class="poi-name" th:text="${p.nombre}">Nombre</td>
+                <td class="poi-city" th:text="${p.ciudad}">Ciudad</td>
+                <td th:text="${p.categoria}">Categoría</td>
+                <td class="action-btns">
+                    <a class="btn-edit" th:href="@{'/admin/edit-poi/' + ${p.id}}">✏️ Editar</a>
+                    <form th:action="@{'/admin/delete-poi/' + ${p.id}}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este lugar?');">
+                        <button type="submit" class="btn-delete">🗑️ Borrar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filterText = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#tableBody tr');
+
+        rows.forEach(row => {
+            // Obtenemos el texto de las columnas de Nombre y Ciudad
+            let name = row.querySelector('.poi-name').textContent.toLowerCase();
+            let city = row.querySelector('.poi-city').textContent.toLowerCase();
+
+            // Si el nombre o la ciudad coinciden con lo que escribimos, mostramos la fila, si no, la ocultamos
+            if (name.includes(filterText) || city.includes(filterText)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

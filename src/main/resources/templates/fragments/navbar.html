@@ -1,16 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <header class="nav" th:fragment="navbar">
 
     <div class="brand">Turistik Explorer</div>
+    <div class="links">
 
-   <!-- <div class="links">
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/destinations}">Destinos</a>
-        <a th:href="@{/about}">Sobre nosotros</a>
-    </div>-->
+        <a class="pill" th:href="@{/login}" sec:authorize="isAnonymous()">
+            👤 Iniciar Sesión
+        </a>
+
+        <a class="pill" th:href="@{/admin/add-poi}" sec:authorize="isAuthenticated()">
+            ⚙️ Panel Admin
+        </a>
+
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="margin: 0; display: inline-flex;">
+            <button type="submit" class="pill" style="cursor: pointer; background: rgba(231, 76, 60, 0.15); color: #c0392b; border-color: rgba(231, 76, 60, 0.3);">
+                🚪 Cerrar Sesión
+            </button>
+        </form>
+
+    </div>
 
 </header>
 

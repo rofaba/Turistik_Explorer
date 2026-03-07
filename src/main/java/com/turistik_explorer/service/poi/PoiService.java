@@ -72,4 +72,12 @@ public class PoiService {
     public void save(Poi poi) {
         poiRepository.save(poi);
     }
+
+    public List<Poi> findAll() {
+        return poiRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        poiRepository.deleteById(id);
+    }
 }

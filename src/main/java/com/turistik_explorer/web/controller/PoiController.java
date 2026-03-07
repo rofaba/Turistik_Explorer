@@ -40,22 +40,48 @@ public class PoiController {
 
         return "pages/poi-detail";
     }
+    // ==========================================
+    // 1. READ: Mostrar el panel de control (Lista)
+    // ==========================================
+    @GetMapping("/admin/pois")
+    public String listPois(Model model) {
+        model.addAttribute("pois", poiService.findAll());
+        return "admin/list-pois";
+    }
 
+    // 2. CREATE: Cargar formulario vacío
     @GetMapping("/admin/add-poi")
     public String addPoiForm(Model model) {
         model.addAttribute("poi", new Poi());
-        return "admin/add-poi";
+        return "admin/poi-form"; // <--- CAMBIO AQUÍ
     }
 
+    // 3. UPDATE: Cargar formulario con datos existentes
+    @GetMapping("/admin/edit-poi/{id}")
+    public String editPoiForm(@PathVariable Long id, Model model) {
+        Poi poi = poiService.findById(id);
+        model.addAttribute("poi", poi);
+        return "admin/poi-form"; // <--- CAMBIO AQUÍ
+    }
+
+    // 4. SAVE: Guarda (Crea o Actualiza) y redirige al panel
     @PostMapping("/admin/add-poi")
     public String savePoi(@Valid @ModelAttribute("poi") Poi poi, BindingResult result) {
         if (result.hasErrors()) {
-            return "admin/add-poi";
+            return "admin/poi-form"; // <--- CAMBIO AQUÍ
         }
 
         poi.setTipo(PlaceType.POI);
         poiService.save(poi);
+        return "redirect:/admin/pois";
+    }
 
-        return "redirect:/explore?city=" + poi.getCiudad();
+    // ==========================================
+    // 5. DELETE: Borrar un POI
+    // ==========================================
+    @PostMapping("/admin/delete-poi/{id}")
+    public String deletePoi(@PathVariable Long id) {
+        poiService.deleteById(id);
+        return "redirect:/admin/pois";
     }
 }

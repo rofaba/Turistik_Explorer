@@ -5,18 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-<section class="city-hero" th:fragment="city-hero">
-         
-    <div class="city-overlay"></div>
+<section class="city-hero" th:fragment="city-hero"
+        th:style="'background-image: url(' +
+        (${city} == 'Málaga' ? 'https://upload.wikimedia.org/wikipedia/commons/f/f2/M%C3%A1laga_banner.jpg' :
+        (${city} == 'Granada' ? 'https://www.iip.ac/wp-content/uploads/2022/04/Descubre-Granada-Banner.jpg' :
+        (${city} == 'Sevilla' ? 'https://discoveringandalucia.com/wp-content/uploads/2023/03/seville-private-banner.webp' :
+        (${city} == 'Cádiz' ? 'https://thesibarist.com/wp-content/uploads/2023/06/Grazalema-1-1.jpeg' :
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/C%C3%A1diz_banner.jpg/1920px-C%C3%A1diz_banner.jpg')))) + ');'">
 
-    <div class="city-content">
-        <h1 th:text="${city}">Ciudad</h1>
-
-        <p>
-            Descubre los mejores lugares, restaurantes y hoteles de esta ciudad.
-        </p>
-    </div>
-
+        <div class="city-overlay"></div>
+        <div class="city-content">
+            <h1 th:text="${city}">Nombre de la Ciudad</h1>
+            <p>Descubre los mejores rincones y sabores</p>
+        </div>
 </section>
+
 </body>
 </html>
