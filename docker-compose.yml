@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # Servicio de Base de Datos
   db:
@@ -8,8 +10,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin123
     ports:
-      - "5433:5432" # Para conectar desde IntelliJ
-
+      - "5433:5432" # Tu PC se conecta por 5433, los contenedores por 5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -18,14 +19,16 @@ services:
     build: .
     container_name: turistik_app
     ports:
-      - "8080:8080"
+      - "8081:8080" # Tu PC entra por 8081, el contenedor escucha en 8080
     depends_on:
       - db
     environment:
+      # Sobrescribimos properties para que funcione en Docker
+      - SERVER_PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/turismo_db
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=admin123
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
 volumes:
-    postgres_data:
+  postgres_data:
